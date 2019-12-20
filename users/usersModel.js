@@ -23,7 +23,7 @@ function remove(id) {
 }
 
 function getAll() {
-  return db('hobbits');
+  return db('users');
 }
 
 function findById(id) {

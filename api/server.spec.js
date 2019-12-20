@@ -30,32 +30,44 @@ describe("GET /", function() {
     });
 });
 
-// describe('POST /', () => {
+describe('POST /', () => {
 
-// it('should create a new user', () => {
-//     return request(server)
-//         .post('/')
-//         .then((res) => {
-//             const { success, message } = res.body;
-//             expect(success).toBeTruthy();
-//             expect(message).toBe('Uploaded successfully');
-//         })
-//         .catch(err => console.log(err));
-//     });
-// })
-
-describe('DELETE/user/:id ', () => {
-
-it('should delete existing user successfully', () => {
+it('should return status code 201', () => {
     return request(server)
-    .delete(`/user/:id`)
-    .then((res) => {
-    const { success, message, error } = res.body;
-    expect(success).toBeTruthy();
-    expect(message).toBe('Delete successfully');
-    expect(error).toBe('Could not find user');
-    })
-    .catch(err => console.log(err));
+        .post('/')
+        .send({
+            id : 1,
+            name: 'test'
+        })
+        .then(response =>{
+            expect(response.status).toBe(201);
+        });
     });
-})
+    it('should return {message: Unable to add user"}', ()=>{
+        return request(server)
+        .post('/')
+        .then(response =>{
+            expect(response.body.message).toBe("Unable to add user")
+        });
+    });
+});
 
+
+describe('DELETE/:id ', () => {
+
+    it('should delete existing user', () => {
+        return request(server)
+        .delete('/1')
+        .then((response) => {
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe('user successfully deleted');
+        });
+    });
+    it("should return a JSON", function() {
+        return request(server)
+            .delete('/1')
+            .then(res => {
+            expect(res.type).toMatch(/json/i);
+            });
+        });
+});
